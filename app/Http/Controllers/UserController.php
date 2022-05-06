@@ -85,7 +85,7 @@ class UserController extends Controller
             //TODO
             return response()->json([
                 "message" => "Usuário criado com sucesso"
-            ], 202); 
+            ], 202);  
         }
 
         return response()->json([
