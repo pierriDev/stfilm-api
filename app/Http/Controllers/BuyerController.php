@@ -16,6 +16,9 @@ class BuyerController extends Controller
     public function index()
     {
         //
+        $buyer = buyer::get();
+
+        return ($buyer);
     }
 
     /**

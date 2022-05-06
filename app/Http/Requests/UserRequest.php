@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateStockRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,6 +25,16 @@ class UpdateStockRequest extends FormRequest
     {
         return [
             //
+           
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required'     => 'Nome',
+            'email.required'    => 'Email',
+            'password.required' => 'Senha',
         ];
     }
 }
