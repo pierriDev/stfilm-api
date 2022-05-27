@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorebuyerRequest;
-use App\Http\Requests\UpdatebuyerRequest;
+use App\Http\Requests\StoreAdminRequest;
+use App\Http\Requests\UpdateAdminRequest;
 
-use App\Models\buyer;
+use App\Models\Admin;
 use App\Models\User;
 
 use Hash;
 
-class BuyerController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,21 +20,31 @@ class BuyerController extends Controller
     public function index()
     {
         //
-        $buyer = buyer::get()->load("user");
 
-        return ($buyer);
+        $admin = Admin::get()->load("user");
+
+        return ($admin);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorebuyerRequest  $request
+     * @param  \App\Http\Requests\StoreAdminRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorebuyerRequest $request)
+    public function store(StoreAdminRequest $request)
     {
         //
-
         $request->validate([
             "name"=>'required',
             "email"=>'required|email',
@@ -55,9 +65,9 @@ class BuyerController extends Controller
         $newUser = User::create($data);
         $data["user_id"] = $newUser->id;
 
-        $newBuyer = buyer::create($data);
+        $newAdmin = Admin::create($data);
 
-        if($newUser && $newBuyer){
+        if($newUser && $newAdmin){
             return response()->json([
                 "message" => "Usuário criado com sucesso"
             ], 200);
@@ -74,29 +84,39 @@ class BuyerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\buyer  $buyer
+     * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function show($buyerId)
+    public function show($adminId)
     {
         //
+        $admin = Admin::find($adminId)->load("user");
 
-        $buyer = buyer::find($buyerId)->load("user");
+        return($admin);
+    }
 
-        return($buyer);
-
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Admin  $admin
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Admin $admin)
+    {
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatebuyerRequest  $request
-     * @param  \App\Models\buyer  $buyer
+     * @param  \App\Http\Requests\UpdateAdminRequest  $request
+     * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatebuyerRequest $request, $buyerId)
+    public function update(UpdateAdminRequest $request, $adminId)
     {
         //
+
         $request->validate([
             "name"=>'required',
             "email"=>'required|email',
@@ -113,33 +133,33 @@ class BuyerController extends Controller
         $data = $request->all();
 
         $data['password'] = Hash::make($data['password']);
-        $buyer = buyer::find($buyerId);
+        $admin = Admin::find($adminId);
 
 
-        $buyer->update($data);
-        $buyer->user->update($data);
+        $admin->update($data);
+        $admin->user->update($data);
 
         return response()->json([
             "message" => "Atualizado com Sucesso",
-            "Buyer" => $buyer->load('user')
+            "Admin" => $admin->load('user')
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\buyer  $buyer
+     * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function destroy($buyerId)
+    public function destroy($adminId)
     {
         //
-        $buyer = buyer::find($buyerId);
-        $user = User::find($buyer["user_id"]);
+        $admin = Admin::find($adminId);
+        $user = User::find($admin["user_id"]);
 
-        if($user && $buyer){
+        if($user && $admin){
             User::destroy($user["id"]);
-            buyer::destroy($buyerId);
+            Admin::destroy($adminId);
     
             return response()->json([
                 "message" => "Deletado com Sucesso"
@@ -149,6 +169,5 @@ class BuyerController extends Controller
                 "message" => "Usuario não Encontrado"
             ], 400);
         }
-
     }
 }

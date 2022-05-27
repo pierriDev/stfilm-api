@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class buyer extends Model
+class Admin extends Model
 {
     use HasFactory;
 
@@ -16,21 +16,11 @@ class buyer extends Model
         'address',
         'number',
         'phone',
-        'user_id',
+        'user_id'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, "user_id", "id");
-    }
-
-    public function avaliation()
-    {
-        return $this->hasMany(Avaliation::class, "buyer_id", "id"); 
-    }
-
-    public function comment()
-    {
-        return $this->hasMany(Comment::class, "buyer_id", "id"); 
     }
 }

@@ -21,17 +21,17 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, "category_id", "id");
+        return $this->belongsTo(Category::class, "id", "category_id");
     }
 
     public function stock()
     {
-        return $this->hasOne(Stock::class, "id", "product_id");
+        return $this->hasOne(Stock::class, "product_id", "id");
     }
 
     public function avaliation()
     {
-        return $this->hasMany(Avaliation::class, "id", "product_id");
+        return $this->hasMany(Avaliation::class, "product_id", "id");
     }
 }
 

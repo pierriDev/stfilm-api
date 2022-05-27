@@ -17,11 +17,11 @@ class Comment extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class, "product_id", "id");
+        return $this->belongsTo(Product::class, "id", "product_id");
     }
 
     public function buyer()
     {
-        return $this->belongsTo(buyer::class, "buyer_id", "id");
+        return $this->belongsTo(buyer::class, "id", "buyer_id");
     }
 }

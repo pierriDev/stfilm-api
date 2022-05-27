@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Models\Admin;
 use App\Models\User;
 use App\Models\buyer;
 
@@ -25,7 +26,7 @@ class UserController extends Controller
     }
 
 
-    public function login(Request $request)
+    public function login(UserRequest $request)
     {
         $data = [
             'email' => $request->email,
@@ -66,6 +67,8 @@ class UserController extends Controller
 
         $data = $request->all();
 
+        $data['password'] = Hash::make($data['password']);
+
         $newUser = User::create($data);
         $data["user_id"] = $newUser->id;
 
@@ -75,17 +78,31 @@ class UserController extends Controller
             if($newUser && $newBuyer){
                 return response()->json([
                     "message" => "Usuário criado com sucesso"
-                ], 202);
+                ], 200);
             }else{
+                if($newUser){
+                    $newUser->destroy();
+                }
                 return response()->json([
                     "message" => "Ocorreu um erro"
                 ], 400);
             }
         }else{
             //TODO
-            return response()->json([
-                "message" => "Usuário criado com sucesso"
-            ], 202);  
+            $newAdmin = Admin::create($data);
+
+            if($newUser && $newAdmin){
+                return response()->json([
+                    "message" => "Usuário criado com sucesso"
+                ], 200);
+            }else{
+                if($newUser){
+                    $newUser->destroy();
+                }
+                return response()->json([
+                    "message" => "Ocorreu um erro"
+                ], 400);
+            }
         }
 
         return response()->json([
@@ -100,22 +117,21 @@ class UserController extends Controller
      * @param  \App\Models\User  $User
      * @return \Illuminate\Http\Response
      */
-    public function show(User $User)
+    public function show($userId)
     {
         //
+        $user = User::find($userId);
+
+
+        if($user->isAdmin){
+           $user->load('Admin');
+        }else{
+           $user->load('buyer');
+        }
+
+        return $user;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UserRequest  $request
-     * @param  \App\Models\User  $User
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UserRequest $request, User $User)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -123,11 +139,13 @@ class UserController extends Controller
      * @param  \App\Models\User  $User
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $User)
+    public function destroy($userId)
     {
-        //
-        // return response()->json([
-        //     "message" => "records deleted"
-        // ], 202);
+
+        User::destroy($userId);
+
+        return response()->json([
+            "message" => "Deletado com Sucesso"
+        ], 200);
     }
 }

@@ -19,16 +19,16 @@ class Transactions extends Model
 
     public function buyer()
     {
-        return $this->belongsTo(buyer::class, "buyer_id", "id");
+        return $this->belongsTo(buyer::class, "id", "buyer_id");
     }
 
     public function products()
     {
-        return $this->hasMany(TransactionsProducts::class, "id", "transction_id")
+        return $this->hasMany(TransactionsProducts::class, "transction_id", "id")
     }
 
     public function charges()
     {
-        return $this->hasMany(Charges::class, "id", "transction_id")
+        return $this->hasMany(Charges::class, "transction_id", "id")
     }
 }
