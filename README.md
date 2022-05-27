@@ -5,8 +5,8 @@
 ---
 **Technologies used:** 
 
-* Node.js
-* TypeScript
+* Laravel
+* PHP
 
 # How to run the project
 

@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'isAdmin',
     ];
 
     /**
@@ -29,7 +30,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 
@@ -44,6 +44,11 @@ class User extends Authenticatable
 
     public function buyer()
     {
-        return $this->hasOne(buyer::class, "id", "user_id");
+        return $this->hasOne(buyer::class, "user_id", "id");
+    }
+
+    public function Admin()
+    {
+        return $this->hasOne(Admin::class, "user_id", "id");
     }
 }
