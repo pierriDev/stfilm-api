@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\OnSale;
 
 class ProductController extends Controller
 {
@@ -16,7 +17,25 @@ class ProductController extends Controller
     public function index()
     {
         //
+        $products = Product::get()->load("category");
+
+        return $products;
     }
+
+    /**
+     * Display a listing of the with highlight status true.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function useHighlights()
+    {
+        // $highlights = OnSale::get()->load("product")->with('product.category')->take(2); 
+        $highlights = OnSale::with(["product", "product.category"])->get(); 
+        
+        return $highlights;
+    }
+
 
     /**
      * Show the form for creating a new resource.

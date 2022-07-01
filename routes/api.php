@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BuyerController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,12 @@ Route::post('/user/delete/{id}', [UserController::class, 'destroy']);
 
 //BUYER ROUTES
 
+//PRODUCTS ROUTES
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/highlights', [ProductController::class, 'useHighlights']);
+
+//CAREGORY ROUTES
+Route::get('/categories', [CategoryController::class, 'index']);
 
 // PROTECTED ROUTES
 Route::middleware('auth:api')->group(function () {

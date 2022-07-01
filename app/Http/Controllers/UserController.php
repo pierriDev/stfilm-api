@@ -88,7 +88,6 @@ class UserController extends Controller
                 ], 400);
             }
         }else{
-            //TODO
             $newAdmin = Admin::create($data);
 
             if($newUser && $newAdmin){
