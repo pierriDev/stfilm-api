@@ -6,6 +6,13 @@ use Illuminate\Database\Seeder;
 use DB;
 use Hash;
 
+use Database\Seeders\AdminSeeder;
+use Database\Seeders\CategorySeeder;
+use Database\Seeders\ProductSeeder;
+use Database\Seeders\OnSaleSeeder;
+use Database\Seeders\StockSeeder;
+
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -17,21 +24,18 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
+        
+        
         DB::table('users')->insert([
             'name' => "Admin",
             'email' => "financeiro@stfilm.com.br",
             'password' => Hash::make('123456'),
             'isAdmin' => true,
         ]);
-
-        DB::table('admins')->insert([
-            'cep' => '00000-000',
-            'cpf' => "000.000.000.00",
-            'birth_date' => "2000-01-01",
-            'address' => "Rua Exp Francisco P dos Santos",
-            'number' => "1109",
-            'phone' => "(41) 99999-9999",
-            'user_id' => "1"
-        ]);
+        $this->call(AdminSeeder::class);
+        $this->call(CategorySeeder::class);
+        $this->call(ProductSeeder::class);
+        $this->call(OnSaleSeeder::class);
+        $this->call(StockSeeder::class);
     }
 }

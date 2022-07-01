@@ -21,7 +21,7 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, "id", "category_id");
+        return $this->belongsTo(Category::class, "category_id", "id");
     }
 
     public function stock()
@@ -33,5 +33,17 @@ class Product extends Model
     {
         return $this->hasMany(Avaliation::class, "product_id", "id");
     }
+
+    public static function getHighlights(Product $products) {
+        $highlights = $products;
+
+        return $highlights;
+    }
+
+    public function onSale()
+    {
+        return $this->hasOne(OnSale::class, "product_id", "id");
+    }
+
 }
 
