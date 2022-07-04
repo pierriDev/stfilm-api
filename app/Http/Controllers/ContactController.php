@@ -37,6 +37,28 @@ class ContactController extends Controller
     public function store(StoreContactRequest $request)
     {
         //
+        $request->validate([
+            "name"=>'required',
+            "company"=>'required',
+            "phone"=>'required',
+            "message"=>'required',
+        ]);
+
+        $data = $request->all();
+
+        $newContact = Contact::create($data);
+
+        if($newContact){
+            return response()->json([
+                "message" => "Mensagem enviada com sucesso",
+                "status" => 200
+            ], 200);
+        }else{
+            return response()->json([
+                "message" => "Ocorreu um erro ao enviar seu contato. Tente novamente mais tarde!",
+                "status" => 400
+            ], 200);
+        }
     }
 
     /**
