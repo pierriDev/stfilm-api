@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 /*
@@ -33,8 +34,14 @@ Route::post('/user/delete/{id}', [UserController::class, 'destroy']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/highlights', [ProductController::class, 'useHighlights']);
 
-//CAREGORY ROUTES
+//CATEGORY ROUTES
 Route::get('/categories', [CategoryController::class, 'index']);
+
+//CORS ROUTES
+Route::middleware('cors')->group(function () {
+    //CONTACT ROUTES
+    Route::post('/contact', [ContactController::class, 'store']);
+});
 
 // PROTECTED ROUTES
 Route::middleware('auth:api')->group(function () {
